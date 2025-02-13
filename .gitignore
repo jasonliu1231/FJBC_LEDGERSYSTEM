@@ -1,0 +1,48 @@
+# Node.js 依賴
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js 產生的編譯與快取資料
+.next/
+out/
+.cache/
+
+# 靜態網站匯出
+out/
+
+# 构建输出
+dist/
+build/
+
+# 環境變數 (避免洩漏敏感資訊)
+.env*
+!.env.example
+
+# 日誌檔案
+logs
+*.log
+npm-debug.log
+yarn-debug.log
+pnpm-debug.log
+
+# VSCode / WebStorm / JetBrains 設定
+.vscode/
+.idea/
+
+# Mac / Linux / Windows 產生的系統檔案
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Jest 測試快取
+jest-cache/
+jest-output/
+
+# Next.js `vercel` / `now` (如果使用 Vercel 部署)
+.vercel
+.now
