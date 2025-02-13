@@ -66,7 +66,7 @@ export default function Example() {
                   帳號
                 </label>
                 <input
-                  value={info?.username || ""}
+                  value={info?.username}
                   onChange={(event) => {
                     setInfo({
                       ...info,
@@ -81,7 +81,7 @@ export default function Example() {
               <div>
                 <label className="sr-only">密碼</label>
                 <input
-                  value={info?.password || ""}
+                  value={info?.password}
                   onChange={(event) => {
                     setInfo({
                       ...info,
