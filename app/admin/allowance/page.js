@@ -10,11 +10,12 @@ const tutoring = [
   { id: 1, name: "多易" },
   { id: 2, name: "艾思" },
   { id: 3, name: "華而敦" },
-  { id: 4, name: "食材" }
+  { id: 4, name: "食材" },
+  { id: 5, name: "其他" }
 ];
 
 const def_search = {
-  tutoring_list: [1, 2, 3, 4],
+  tutoring_list: [1, 2, 3, 4, 5],
   type: 0,
   index: true,
   begin: "",
@@ -87,7 +88,7 @@ export default function Home() {
         clientid: `${localStorage.getItem("client_id")}`,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ id })
+      body: JSON.stringify({ bill_id: id })
     };
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_8102}/fjbc_tutoring_api/bill/accountant/reject`, config);
     const res = await response.json();
@@ -107,7 +108,7 @@ export default function Home() {
         clientid: `${localStorage.getItem("client_id")}`,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ id: id, finish: bool })
+      body: JSON.stringify({ bill_id: id, finish: bool })
     };
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_8102}/fjbc_tutoring_api/bill/accountant/finish`, config);
     const res = await response.json();

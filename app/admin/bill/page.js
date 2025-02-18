@@ -92,36 +92,7 @@ export default function Home() {
     );
   }
 
-  async function lineAlert(msg) {
-    const config = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: msg
-      })
-    };
-    let url = `/api/line`;
-    await fetch(url, config);
-  }
-
-  async function notificationAll(data) {
-    const config = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    };
-    const response = await fetch(`/api/notification`, config);
-    const res = await response.json();
-    if (response.ok) {
-      console.log(res);
-    }
-  }
-
-  async function invoiceCheck(data, item) {
+  async function invoiceCheck(data) {
     const config = {
       method: "PUT",
       headers: {
@@ -137,40 +108,12 @@ export default function Home() {
     if (response.ok) {
       getPaymentDetail();
       setOpen(false);
-      let message = "";
-      if (data.approve) {
-        const str = item.charge_date.split("-");
-        const date = `${str[0]}年${str[1]}月${str[2]}日`;
-        message = `\n${item.tutoring_id == 1 ? "私立多易文理短期補習班" : item.tutoring_id == 2 ? "私立艾思短期補習班" : null}\n姓名：${item.first_name}\n收費方式：${
-          item.payment_method == 1 ? "現金" : item.payment_method == 2 ? "轉帳" : item.payment_method == 3 ? "信用卡" : "其他"
-        }\n繳費日期：${date}\n實收：${item.total}\n已確認收款`;
-
-        notificationAll({
-          title: "審核通過",
-          message: message
-        });
-      } else {
-        item = alertData;
-        const str = item.charge_date.split("-");
-        const date = `${str[0]}年${str[1]}月${str[2]}日`;
-        message = `\n${item.tutoring_id == 1 ? "私立多易文理短期補習班" : item.tutoring_id == 2 ? "私立艾思短期補習班" : null}\n姓名：${item.first_name}\n收費方式：${
-          item.payment_method == 1 ? "現金" : item.payment_method == 2 ? "轉帳" : item.payment_method == 3 ? "信用卡" : "其他"
-        }\n繳費日期：${date}\n實收：${item.total}\n已註銷款項\n原因：${data.reject}`;
-
-        notificationAll({
-          title: "審核拒絕",
-          message: message
-        });
-      }
-      if (enabled) {
-        lineAlert(message);
-      }
     } else {
       alert(res.msg);
     }
   }
 
-  async function refundCheck(data, item) {
+  async function refundCheck(data) {
     const config = {
       method: "PUT",
       headers: {
@@ -187,35 +130,6 @@ export default function Home() {
     if (response.ok) {
       getPaymentDetail();
       setOpen(false);
-      let message = "";
-      if (data.refund_status) {
-        const str = item.charge_date.split("-");
-        const date = `${str[0]}年${str[1]}月${str[2]}日`;
-        message = `\n${item.tutoring_id == 1 ? "私立多易文理短期補習班" : item.tutoring_id == 2 ? "私立艾思短期補習班" : null}\n姓名：${item.first_name}\n退費方式：${
-          item.payment_method == 1 ? "現金" : item.payment_method == 2 ? "轉帳" : item.payment_method == 3 ? "信用卡" : "其他"
-        }\n繳費日期：${date}\n實收：${item.total}\n已確認退款`;
-
-        notificationAll({
-          title: "審核通過",
-          message: message
-        });
-      } else {
-        item = alertData;
-        const str = item.charge_date.split("-");
-        const date = `${str[0]}年${str[1]}月${str[2]}日`;
-        message = `\n${item.tutoring_id == 1 ? "私立多易文理短期補習班" : item.tutoring_id == 2 ? "私立艾思短期補習班" : null}\n姓名：${item.first_name}\n退費方式：${
-          item.payment_method == 1 ? "現金" : item.payment_method == 2 ? "轉帳" : item.payment_method == 3 ? "信用卡" : "其他"
-        }\n繳費日期：${date}\n實收：${item.total}\n已拒絕退款\n原因：${data.refund_reject}`;
-
-        notificationAll({
-          title: "審核拒絕",
-          message: message
-        });
-      }
-
-      if (enabled) {
-        lineAlert(message);
-      }
     } else {
       alert(res.msg);
     }
@@ -319,10 +233,10 @@ export default function Home() {
           </div>
         </div>
       </Dialog>
-      <div className="container mx-auto p-2 sm:p-4">
+      <div className="container mx-auto p-2">
         <div className="grid grid-cols-12 gap-x-1">
           <div className="col-span-1 text-xl font-semibold text-gray-900">繳費紀錄</div>
-          <div className="col-span-1">
+          <div className="col-span-2">
             <input
               value={student}
               onChange={(e) => {
@@ -446,66 +360,10 @@ export default function Home() {
                 信用卡
               </button>
             </span>
-            {/* <span className="isolate inline-flex rounded-md shadow-sm mx-1">
-              <button
-                onClick={() => {
-                  setRejectBtn(!rejectBtn);
-                }}
-                type="button"
-                className={`${
-                  rejectBtn ? "ring-4 ring-purple-300" : "ring-1 ring-gray-300"
-                } ring-inset relative -ml-px inline-flex items-center bg-white rounded-md px-3 py-2 text-sm font-semibold text-gray-900  hover:bg-gray-50 focus:z-10`}
-              >
-                註銷
-              </button>
-            </span> */}
           </div>
-
-          <span className="col-span-2 isolate inline-flex">
+          <div className="col-span-1">
             <ExportToExcel />
-            <div className="flex items-center">
-              <span className="text-red-500 mr-2">推播</span>
-              <Switch
-                checked={enabled}
-                onChange={setEnabled}
-                className="group relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 data-[checked]:bg-indigo-600"
-              >
-                <span className="sr-only">Use setting</span>
-                <span className="pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-5">
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-200 ease-in group-data-[checked]:opacity-0 group-data-[checked]:duration-100 group-data-[checked]:ease-out"
-                  >
-                    <svg
-                      fill="none"
-                      viewBox="0 0 12 12"
-                      className="h-3 w-3 text-gray-400"
-                    >
-                      <path
-                        d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 flex h-full w-full items-center justify-center opacity-0 transition-opacity duration-100 ease-out group-data-[checked]:opacity-100 group-data-[checked]:duration-200 group-data-[checked]:ease-in"
-                  >
-                    <svg
-                      fill="currentColor"
-                      viewBox="0 0 12 12"
-                      className="h-3 w-3 text-indigo-600"
-                    >
-                      <path d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z" />
-                    </svg>
-                  </span>
-                </span>
-              </Switch>
-            </div>
-          </span>
+          </div>
         </div>
 
         <div className="grid grid-cols-4 mt-6 text-gray-900">
@@ -661,15 +519,12 @@ export default function Home() {
                             data.current = item;
                             setAlertData(item);
                             if (item.is_refund) {
-                              refundCheck({ id: item.invoice_refund_id, refund_status: true }, item);
+                              refundCheck({ id: item.invoice_refund_id, refund_status: true });
                             } else {
-                              invoiceCheck(
-                                {
-                                  id: item.invoice_id,
-                                  approve: true
-                                },
-                                item
-                              );
+                              invoiceCheck({
+                                id: item.invoice_id,
+                                approve: true
+                              });
                             }
                           }}
                           type="button"

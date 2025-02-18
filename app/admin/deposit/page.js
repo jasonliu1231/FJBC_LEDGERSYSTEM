@@ -18,63 +18,6 @@ export default function Home() {
           return name.toLowerCase().includes(student.toLowerCase());
         });
 
-  function getTableData() {
-    const table = document.getElementById("myTable");
-    const rows = table.querySelectorAll("tbody tr");
-
-    // 提取表格中的資料，只選擇 Name 和 Age 欄位
-    const data = [];
-    rows.forEach((row) => {
-      const cells = row.querySelectorAll("td");
-      console.log(cells);
-      data.push({
-        類型: cells[0].innerText,
-        單位: cells[1].innerText,
-        姓名: cells[2].innerText,
-        收退方式: cells[3].innerText,
-        收費月份: cells[4].innerText,
-        繳費日期: cells[5].innerText,
-        學費: cells[6].innerText,
-        教材費: cells[7].innerText,
-        餐費: cells[8].innerText,
-        交通費: cells[9].innerText,
-        折扣: cells[10].innerText,
-        優惠券: cells[11].innerText,
-        訂金: cells[12].innerText,
-        實收: cells[13].innerText
-      });
-    });
-
-    return data;
-  }
-
-  function ExportToExcel() {
-    const date = new Date();
-    const exportTableToExcel = () => {
-      // 呼叫函數來取得選定的欄位資料
-      const selectedData = getTableData();
-
-      // 將選擇的資料轉為 worksheet
-      const worksheet = XLSX.utils.json_to_sheet(selectedData);
-
-      // 創建新的 workbook
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-
-      // 將 workbook 寫入 Excel 檔案
-      XLSX.writeFile(workbook, `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}_Bill.xlsx`);
-    };
-
-    return (
-      <button
-        className="m-1 relative inline-flex rounded-md items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-4 ring-inset ring-green-300 hover:bg-gray-50 focus:z-10"
-        onClick={exportTableToExcel}
-      >
-        Excel
-      </button>
-    );
-  }
-
   async function newCheck(data) {
     const config = {
       method: "PUT",
@@ -219,52 +162,6 @@ export default function Home() {
               className="px-3 w-full rounded-md border-0 p-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300"
             />
           </div>
-
-          {/* <span className="col-span-2 isolate inline-flex">
-            <ExportToExcel />
-            <div className="flex items-center">
-              <span className="text-red-500 mr-2">推播</span>
-              <Switch
-                checked={enabled}
-                onChange={setEnabled}
-                className="group relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 data-[checked]:bg-indigo-600"
-              >
-                <span className="sr-only">Use setting</span>
-                <span className="pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-5">
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-200 ease-in group-data-[checked]:opacity-0 group-data-[checked]:duration-100 group-data-[checked]:ease-out"
-                  >
-                    <svg
-                      fill="none"
-                      viewBox="0 0 12 12"
-                      className="h-3 w-3 text-gray-400"
-                    >
-                      <path
-                        d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 flex h-full w-full items-center justify-center opacity-0 transition-opacity duration-100 ease-out group-data-[checked]:opacity-100 group-data-[checked]:duration-200 group-data-[checked]:ease-in"
-                  >
-                    <svg
-                      fill="currentColor"
-                      viewBox="0 0 12 12"
-                      className="h-3 w-3 text-indigo-600"
-                    >
-                      <path d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z" />
-                    </svg>
-                  </span>
-                </span>
-              </Switch>
-            </div>
-          </span> */}
         </div>
 
         <div className="relative mt-6 flex-1">
