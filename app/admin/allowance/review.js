@@ -336,7 +336,7 @@ export default function Home() {
                 <td className="px-3 py-4 text-sm font-medium text-gray-900">{bill.remark}</td>
                 <td className={`${bill.state ? "text-green-500" : "text-red-500"} whitespace-nowrap px-3 py-4 text-sm text-right`}>{bill.state ? "收入" : "支出"}</td>
                 <td className={`${bill.state ? "text-green-500" : "text-red-500"} whitespace-nowrap px-3 py-4 text-sm text-left`}>{bill.amount}</td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{bill.invoice}</td>
+                <td className="px-3 py-4 text-sm font-medium text-gray-900">{bill.invoice}</td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{bill.first_name}</td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm flex items-center">
                   {bill.finish ? (
